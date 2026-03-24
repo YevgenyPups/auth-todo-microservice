@@ -19,7 +19,7 @@ class User:
     )
     role: UserRole = UserRole.CLIENT
     is_confirmed: bool = False
-    is_active: bool = True
+    is_active: bool = False
     is_deleted: bool = False
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
