@@ -37,7 +37,7 @@ def test_user_has_default_role():
 def test_user_has_default_flags():
     user = User(email=Email("test@example.com"), password_hash=b"hash")
 
-    assert user.is_active is True
+    assert user.is_active is False
     assert user.is_confirmed is False
     assert user.is_deleted is False
 
