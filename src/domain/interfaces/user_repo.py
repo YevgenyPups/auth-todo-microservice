@@ -1,10 +1,16 @@
 from typing import Protocol
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from domain.entities import User as UserEntity
+from src.infrastructure.db.mappers import UserMapper
 
 
 class IUserRepo(Protocol):
     """User repository interface."""
+
+    _session: AsyncSession
+    _mapper: UserMapper
 
     async def exists_by_email(self, email: str) -> bool:
         """Check if user exists by email."""
