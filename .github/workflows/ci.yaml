@@ -1,0 +1,61 @@
+name: Docker CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      APP_EXTERNAL_PORT: ${{secrets.APP_EXTERNAL_PORT}}
+      DB_HOST: ${{secrets.DB_HOST}}
+      DB_EXTERNAL_PORT: ${{secrets.DB_EXTERNAL_PORT}}
+      DB_NAME: ${{secrets.DB_NAME}}
+      DB_USER: ${{secrets.DB_USER}}
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Create temp .env file
+        run: |
+          cat <<EOF > .env
+          APP_EXTERNAL_PORT=${{secrets.APP_EXTERNAL_PORT}}
+          DB_HOST=${{secrets.DB_HOST}}
+          DB_EXTERNAL_PORT=${{secrets.DB_EXTERNAL_PORT}}
+          DB_NAME=${{secrets.DB_NAME}}
+          DB_USER=${{secrets.DB_USER}}
+          DB_PASSWORD=${{secrets.DB_PASSWORD}}
+          EOF
+
+      - name: Build and Run Docker Compose
+        run: |
+          docker-compose build
+          docker-compose up -d
+          docker-compose ps -a
+
+      - name: Teardown Docker Compose
+        if: always()
+        run: docker-compose down --volumes
+
+      - name: Delete .env file
+        if: always()
+        run: rm -f .env
