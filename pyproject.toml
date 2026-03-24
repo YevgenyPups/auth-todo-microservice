@@ -1,0 +1,11 @@
+[project]
+name = "auth-todo-microservice"
+version = "0.1.0"
+description = "Auth service as a part of TODO app"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi==0.120.0",
+    "gunicorn==23.0.0",
+    "uvicorn[standard]==0.38.0",
+]
