@@ -2,9 +2,12 @@ import logging
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
+from dishka import make_async_container
+from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 
-from .config.logger import setup_logger
+from src.infrastructure.config.logger import setup_logger
+from src.infrastructure.ioc.di import get_providers
 
 logger = logging.getLogger(__name__)
 
@@ -25,4 +28,8 @@ def create_app() -> FastAPI:
 
     setup_logger()
 
-    return FastAPI(title="Auth Todo Service", lifespan=lifespan, debug=True)
+    app = FastAPI(title="Auth Todo Service", lifespan=lifespan, debug=True)
+    container = make_async_container(*get_providers().values())
+
+    setup_dishka(container, app)
+    return app
