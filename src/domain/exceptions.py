@@ -8,3 +8,9 @@ class EmailError(DomainError):
     """Raised when email format validation fails."""
 
     pass
+
+
+class UsernameError(DomainError):
+    """Raised when username validation fails."""
+
+    pass
