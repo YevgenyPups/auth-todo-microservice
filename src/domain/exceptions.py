@@ -14,3 +14,9 @@ class UsernameError(DomainError):
     """Raised when username validation fails."""
 
     pass
+
+
+class PasswordValidationError(DomainError):
+    """Raised when password validation fails (length, complexity, etc.)."""
+
+    pass
