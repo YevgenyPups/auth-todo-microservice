@@ -13,7 +13,7 @@ from src.domain.password_validator import PasswordValidator
         "my_secret",
     ],
 )
-def test_valid_passwords(password):
+def test_valid_password(password):
     validator = PasswordValidator()
     validator(password)
 
@@ -26,7 +26,7 @@ def test_valid_passwords(password):
         "a" * 129,  # too long
     ],
 )
-def test_invalid_passwords(password):
+def test_invalid_password(password):
     validator = PasswordValidator()
     with pytest.raises(PasswordValidationError):
         validator(password)
