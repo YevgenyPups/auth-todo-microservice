@@ -1,0 +1,42 @@
+services:
+  fastapi:
+    restart: unless-stopped
+    container_name: fastapi
+    build: .
+    entrypoint: ["sh", "/app/entrypoints/fastapi.sh"]
+    ports:
+      - "${APP_EXTERNAL_PORT}:8000"
+    depends_on:
+      db_auth:
+        condition: service_healthy
+    networks:
+      - app-network
+
+
+  db_auth:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    container_name: db_auth
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+    ports:
+      - "${DB_EXTERNAL_PORT}:5432"
+    networks:
+      - app-network
+
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge

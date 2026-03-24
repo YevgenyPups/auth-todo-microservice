@@ -4,7 +4,7 @@ from typing import AsyncIterator
 
 from fastapi import FastAPI
 
-from config.logger import setup_logger
+from .config.logger import setup_logger
 
 logger = logging.getLogger(__name__)
 
@@ -26,12 +26,3 @@ def create_app() -> FastAPI:
     setup_logger()
 
     return FastAPI(title="Auth Todo Service", lifespan=lifespan, debug=True)
-
-
-if __name__ == "__main__":
-
-    app = create_app()
-
-    import uvicorn
-
-    uvicorn.run(app, host="localhost", port=8000)

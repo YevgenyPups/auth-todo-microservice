@@ -1,0 +1,48 @@
+# Python cache and environments
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+.env.example
+venv/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Git
+.git/
+.gitignore
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Project files (optional - exclude from production)
+README.md
+*.md
+*.txt
+
+# Dependency files (pyproject.toml is enough)
+requirements*.txt
+Pipfile
+Pipfile.lock
+
+# Config files (not needed in runtime)
+.pre-commit-config.yaml
+mypy.ini
+.ruff.toml
