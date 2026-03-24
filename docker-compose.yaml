@@ -3,7 +3,7 @@ services:
     restart: unless-stopped
     container_name: fastapi
     build: .
-    entrypoint: ["sh", "/app/entrypoints/fastapi.sh"]
+    entrypoint: ["sh", "/app/fastapi.sh"]
     ports:
       - "${APP_EXTERNAL_PORT}:8000"
     depends_on:
