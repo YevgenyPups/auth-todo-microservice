@@ -2,15 +2,6 @@ import pytest
 
 from src.domain.entities import User as UserEntity
 from src.domain.value_objects import Email
-from src.infrastructure.db.mappers import UserMapper
-from src.infrastructure.db.repos import UserRepo
-
-
-@pytest.fixture(scope="function")
-def user_repo(db_session):
-    """Get user repo instance."""
-
-    return UserRepo(session=db_session, mapper=UserMapper)
 
 
 @pytest.mark.asyncio

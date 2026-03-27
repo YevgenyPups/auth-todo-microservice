@@ -35,3 +35,11 @@ class User(Base):
         TIMESTAMP(timezone=True),
         nullable=False,
     )
+
+    def __repr__(self) -> str:
+        return (
+            f"User(id={self.id}, username={self.username}, email={self.email},"
+            f"role={self.role}, is_confirmed={self.is_confirmed},"
+            f"is_active={self.is_active}, is_deleted={self.is_deleted},"
+            f"created_at={self.created_at}, updated_at={self.updated_at})"
+        )
