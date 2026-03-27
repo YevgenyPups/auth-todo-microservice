@@ -2,8 +2,9 @@ from typing import Protocol
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from domain.entities import User as UserEntity
 from src.infrastructure.db.mappers import UserMapper
+
+from ..entities import User as UserEntity
 
 
 class IUserRepo(Protocol):

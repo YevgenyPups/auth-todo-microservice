@@ -5,7 +5,10 @@ from psycopg2.errors import DuplicateDatabase
 from sqlalchemy import create_engine as create_sync_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from src.infrastructure.db.mappers import UserMapper
 from src.infrastructure.db.models import Base
+from src.infrastructure.db.repos import UserRepo
+from src.infrastructure.db.uow import UnitOfWork
 
 from .db.settings import TestDatabaseSettings
 
@@ -58,16 +61,29 @@ async def async_engine(db_settings, create_and_delete_tables):
     await engine.dispose()
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(loop_scope="function")
 async def db_session(async_engine):
-    """Provides isolated db session with auto-rollback."""
+    """Provide database session per test."""
 
-    AsyncSessionLocal = async_sessionmaker(
+    session_maker = async_sessionmaker(
         async_engine, expire_on_commit=False, autoflush=False
     )
-    async with AsyncSessionLocal() as session:
-        transaction = await session.begin()
+    async with session_maker() as session:
         try:
             yield session
         finally:
-            await transaction.rollback()
+            await session.close()
+
+
+@pytest.fixture
+def user_repo(db_session):
+    """Provide user repo instance for tests."""
+
+    return UserRepo(db_session, UserMapper)
+
+
+@pytest.fixture
+def uow(db_session, user_repo):
+    """Provide uow instance for tests."""
+
+    return UnitOfWork(db_session, user_repo)
