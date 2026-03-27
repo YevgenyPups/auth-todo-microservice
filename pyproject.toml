@@ -17,6 +17,7 @@ dependencies = [
     "greenlet>=2.0.0",
     "psycopg2-binary==2.9.10",
     "dishka==1.8.0",
+    "bcrypt>=5.0.0",
 ]
 
 [dependency-groups]
