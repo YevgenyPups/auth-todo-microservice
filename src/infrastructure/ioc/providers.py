@@ -112,7 +112,7 @@ class HelperProvider(Provider):
 class UseCaseProvider(Provider):
     """Provider for use cases instances."""
 
-    @provide(scope=Scope.APP)
+    @provide(scope=Scope.REQUEST)
     def get_register_user(
         self,
         uow: IUnitOfWork,

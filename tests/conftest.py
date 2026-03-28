@@ -5,12 +5,15 @@ from psycopg2.errors import DuplicateDatabase
 from sqlalchemy import create_engine as create_sync_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from src.application.use_cases import RegisterUser
+from src.domain.password_validator import PasswordValidator
+from src.infrastructure.auth.password_hasher import PasswordHasher
 from src.infrastructure.db.mappers import UserMapper
 from src.infrastructure.db.models import Base
 from src.infrastructure.db.repos import UserRepo
 from src.infrastructure.db.uow import UnitOfWork
 
-from .db.settings import TestDatabaseSettings
+from .infrastucture.db.settings import TestDatabaseSettings
 
 
 @pytest.fixture(scope="session")
@@ -87,3 +90,24 @@ def uow(db_session, user_repo):
     """Provide uow instance for tests."""
 
     return UnitOfWork(db_session, user_repo)
+
+
+@pytest.fixture(scope="session")
+def password_hasher():
+    """Provide password hasher instance for tests."""
+
+    return PasswordHasher()
+
+
+@pytest.fixture(scope="session")
+def password_validator():
+    """Provide password validator instance for tests."""
+
+    return PasswordValidator()
+
+
+@pytest.fixture
+def register_user(uow, password_validator, password_hasher):
+    """Provide register use case instance for tests."""
+
+    return RegisterUser(uow, password_validator, password_hasher)

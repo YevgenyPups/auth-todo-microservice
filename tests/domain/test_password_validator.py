@@ -1,7 +1,6 @@
 import pytest
 
 from src.domain.exceptions import PasswordValidationError
-from src.domain.password_validator import PasswordValidator
 
 
 @pytest.mark.parametrize(
@@ -13,9 +12,8 @@ from src.domain.password_validator import PasswordValidator
         "my_secret",
     ],
 )
-def test_valid_password(password):
-    validator = PasswordValidator()
-    validator(password)
+def test_valid_password(password, password_validator):
+    assert password_validator(password) is None
 
 
 @pytest.mark.parametrize(
@@ -26,7 +24,6 @@ def test_valid_password(password):
         "a" * 129,  # too long
     ],
 )
-def test_invalid_password(password):
-    validator = PasswordValidator()
+def test_invalid_password(password, password_validator):
     with pytest.raises(PasswordValidationError):
-        validator(password)
+        password_validator(password)

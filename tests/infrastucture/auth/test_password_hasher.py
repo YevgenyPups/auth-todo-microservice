@@ -1,13 +1,3 @@
-import pytest
-
-from src.infrastructure.auth.password_hasher import PasswordHasher
-
-
-@pytest.fixture(scope="module")
-def password_hasher():
-    return PasswordHasher()
-
-
 def test_password_verify_valid(password_hasher):
     password = "password"
     password_hash = password_hasher.hash(password)
